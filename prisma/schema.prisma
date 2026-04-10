@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model Participant {
+  id          String    @id @default(cuid())
+  name        String
+  phone       String    @unique
+  industry    String
+  company     String
+  title       String
+  bio         String?   @db.Text
+  avatar      String?
+  checkedIn   Boolean   @default(false)
+  checkinTime DateTime?
+  checkinCode String    @unique
+  groupId     String?
+  avatarSeed  String?
+
+  shrimpGender String?
+  shrimpReason String?   @db.Text
+  shrimpSkills String?   @db.Text
+  shrimpWish   String?
+  shrimpTitle  String?
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  matchesAsUser1 BlindboxMatch[] @relation("MatchUser1")
+  matchesAsUser2 BlindboxMatch[] @relation("MatchUser2")
+
+  @@index([phone])
+  @@index([checkinCode])
+}
+
+model BlindboxMatch {
+  id        String   @id @default(cuid())
+  user1Id   String
+  user2Id   String
+  user1     Participant @relation("MatchUser1", fields: [user1Id], references: [id])
+  user2     Participant @relation("MatchUser2", fields: [user2Id], references: [id])
+  revealed  Boolean  @default(false)
+  round     Int      @default(1)
+  source    String   @default("manual") // "system" = 管理员配对, "manual" = 用户手动交换
+  createdAt DateTime @default(now())
+
+  @@index([user1Id])
+  @@index([user2Id])
+}
+
+model GameSession {
+  id            String    @id @default(cuid())
+  currentRound  Int       @default(0)
+  currentPrompt String?   @db.Text
+  roundStartAt  DateTime?
+  roundDuration Int       @default(300)
+  status        String    @default("waiting")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  submissions   GameSubmission[]
+}
+
+model GameSubmission {
+  id        String      @id @default(cuid())
+  sessionId String
+  session   GameSession @relation(fields: [sessionId], references: [id])
+  round     Int
+  userId    String
+  userName  String
+  industry  String
+  keyword   String      @db.Text
+  createdAt DateTime    @default(now())
+
+  @@index([sessionId])
+  @@index([userId])
+}

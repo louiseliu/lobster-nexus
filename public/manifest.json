@@ -1,0 +1,17 @@
+{
+  "name": "昆明龙虾局 - 钳所未有",
+  "short_name": "龙虾局",
+  "description": "首届昆明龙虾局 — 钳所未有：当龙虾遇上百业盲盒",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#94DCDB",
+  "theme_color": "#94DCDB",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ]
+}
