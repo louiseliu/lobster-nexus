@@ -22,6 +22,8 @@ interface ParticipantInfo {
   checkedIn: boolean;
 }
 
+const CHECKIN_OPEN_TIME = new Date("2026-04-13T13:30:00+08:00");
+
 function CheckinContent() {
   const searchParams = useSearchParams();
   const codeFromUrl = searchParams.get("code") || "";
@@ -30,6 +32,14 @@ function CheckinContent() {
   const [loading, setLoading] = useState(false);
   const [participant, setParticipant] = useState<ParticipantInfo | null>(null);
   const [justCheckedIn, setJustCheckedIn] = useState(false);
+  const [now, setNow] = useState(Date.now());
+
+  const isCheckinOpen = now >= CHECKIN_OPEN_TIME.getTime();
+
+  useEffect(() => {
+    const timer = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     const savedPhone = localStorage.getItem("lobster-phone");
@@ -95,16 +105,35 @@ function CheckinContent() {
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        🎫 签到入场
+        🎫 现场签到
       </motion.h1>
       <motion.p
-        className="text-sm text-gray-700 mb-8 tracking-wider"
+        className="text-sm text-gray-700 mb-3 tracking-wider"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
       >
-        输入手机号，确认你的龙虾局席位
+        请到活动现场签到入场
       </motion.p>
+      <motion.div
+        className="mb-8 px-4 py-2 rounded-xl border border-red-300/30 bg-white/60"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.3 }}
+      >
+        <p className="text-sm text-gray-600 text-center">
+          📅 签到开放时间：<span className="font-bold text-red-600">4月13日 13:30</span>
+        </p>
+        {!isCheckinOpen && (
+          <motion.p
+            className="text-xs text-amber-600 text-center mt-1"
+            animate={{ opacity: [0.6, 1, 0.6] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            ⏳ 签到尚未开放，请到现场后签到
+          </motion.p>
+        )}
+      </motion.div>
 
       <AnimatePresence mode="wait">
         {justCheckedIn && participant ? (
@@ -245,10 +274,12 @@ function CheckinContent() {
                 <Button
                   size="lg"
                   onClick={handleCheckin}
-                  disabled={loading || !code.trim()}
-                  className="w-full h-14 text-base font-bold lobster-gradient-metallic hover:opacity-90 rounded-xl text-white border-0 animate-glow-pulse-intense shadow-[0_0_20px_rgba(220,50,30,0.15)]"
+                  disabled={loading || !code.trim() || !isCheckinOpen}
+                  className="w-full h-14 text-base font-bold lobster-gradient-metallic hover:opacity-90 rounded-xl text-white border-0 animate-glow-pulse-intense shadow-[0_0_20px_rgba(220,50,30,0.15)] disabled:opacity-50 disabled:animate-none"
                 >
-                  {loading ? (
+                  {!isCheckinOpen ? (
+                    "⏳ 签到未开放"
+                  ) : loading ? (
                     <motion.span
                       animate={{ rotate: 360 }}
                       transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
