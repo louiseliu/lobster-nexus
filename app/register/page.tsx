@@ -628,7 +628,7 @@ export default function RegisterPage() {
 
                   {/* Shrimp Wish */}
                   <div>
-                    <ShrimpFieldLabel text="虾生遗愿：" />
+                    <ShrimpFieldLabel text="虾生梦想：" />
                     <p className="text-sm mt-1 mb-2" style={{ color: "#4B5563" }}>在龙虾局最想实现的一件事</p>
                     <textarea
                       placeholder="例：找到一个跨界合伙人，一起搞事情！"

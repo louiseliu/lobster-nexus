@@ -466,7 +466,7 @@ function ProfileCard({
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 1.5 }}
         >
-          <FieldLabel text="虾生遗愿：" />
+          <FieldLabel text="虾生梦想：" />
           <div className="mt-2 px-4 py-3 rounded-xl relative" style={{ background: "rgba(255,255,255,0.4)", border: "1px dashed #A8DDD9" }}>
             <span className="absolute top-1 left-2 text-xl font-serif" style={{ color: "#E74C3C", opacity: 0.3 }}>&ldquo;</span>
             <p className="text-sm italic leading-relaxed px-3" style={{ color: "#374151" }}>
