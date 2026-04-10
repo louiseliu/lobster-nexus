@@ -118,8 +118,9 @@ update() {
   check_env
   build_app
 
-  log "零停机重启（PM2 reload）..."
-  pm2 reload "$APP_NAME" || pm2 start ecosystem.config.js
+  log "重启应用（PM2 delete + start 确保配置更新）..."
+  pm2 delete "$APP_NAME" 2>/dev/null || true
+  pm2 start ecosystem.config.js
   pm2 save
 
   echo ""
