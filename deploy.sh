@@ -118,10 +118,8 @@ update() {
   check_env
   build_app
 
-  log "重启应用（PM2 彻底清理 + 重新启动）..."
+  log "重启应用（仅重启 $APP_NAME）..."
   pm2 delete "$APP_NAME" 2>/dev/null || true
-  pm2 kill 2>/dev/null || true
-  sleep 1
   pm2 start ecosystem.config.js
   pm2 save
 
