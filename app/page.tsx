@@ -103,7 +103,7 @@ export default function Home() {
             transition={{ delay: 0.7 }}
           >
             <span className="w-6 h-px bg-red-500/30" />
-            <p className="text-sm text-gray-700">2026.04.13 · 斯卡沃里尼昆明店 · 30-50人</p>
+            <p className="text-sm text-gray-700">2026.04.13 · 斯卡沃里尼昆明店</p>
             <span className="w-6 h-px bg-red-500/30" />
           </motion.div>
         </motion.div>
